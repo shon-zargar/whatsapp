@@ -17,7 +17,7 @@ import conftest
 log_stream = StringIO()
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', stream=log_stream)
 
-chrome_profile_directory = "C:/Users/shonz/AppData/Local/Google/Chrome/User Data/Default"
+chrome_profile_directory = "C:/Users/path"
 
 @pytest.fixture(scope="class")
 def setup(request):
@@ -25,7 +25,7 @@ def setup(request):
     chrome_options.add_argument(f"user-data-dir={chrome_profile_directory}")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--ignore-certificate-errors")
-    service_obj = Service("C:/Users/shonz/Desktop/selenium/chromedriver2/chromedriver.exe")
+    service_obj = Service("C:/Users/path/chromedriver.exe")
     driver = webdriver.Chrome(service=service_obj, options=chrome_options)
     driver.implicitly_wait(5)
     driver.get("https://web.whatsapp.com/")
@@ -51,7 +51,7 @@ class TestWhatsApp:
         else:
             logging.info("האלמנט נמצא, כבר לחוץ.")
 
-        screenshot_path = f'C:/Users/shonz/PycharmProjects/pythonProject/tests/screenshots/screenshot_{term}.png'
+        screenshot_path = f'C:/Users/path/tests/screenshots/screenshot_{term}.png'
         search_field = None
 
         try:
