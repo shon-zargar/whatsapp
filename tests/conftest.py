@@ -1,6 +1,3 @@
-# conftest.py
-
-
 def pytest_configure(config):
     config.addinivalue_line("markers", "description: תיאור לבדיקות")
 
@@ -16,4 +13,4 @@ def pytest_runtest_makereport(item, call):
             report.extras = feature_request.node.extra
 
 
-terms = ["ביטוח", "פנסיה"]
+terms = ["ביטוח","ברוש"]
