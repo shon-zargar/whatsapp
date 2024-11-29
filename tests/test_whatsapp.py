@@ -9,17 +9,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging
 import os
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from io import StringIO
 from pytest_html import extras
 import pytest
 import conftest
 
+# הגדרת הלוגים
 log_stream = StringIO()
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', stream=log_stream)
 
+# נתיב פרופיל Chrome
 chrome_profile_directory = "C:/Users/shonz/AppData/Local/Google/Chrome/User Data/Default"
 
+# פיקסטורה להגדרת הדפדפן
 @pytest.fixture(scope="class")
 def setup(request):
     chrome_options = webdriver.ChromeOptions()
@@ -80,13 +83,18 @@ class TestWhatsApp:
                 excel_path = f'C:/Users/shonz/PycharmProjects/{term}_Results.xlsx'
                 sheet_name = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
+                # יצירת קובץ חדש אם לא קיים
+                if not os.path.exists(excel_path):
+                    logging.info(f"יצירת קובץ חדש: {excel_path}")
+                    book = Workbook()
+                    book.save(excel_path)
+
                 # טעינת כל הנתונים הקיימים בקובץ האקסל
                 existing_data = set()
-                if os.path.exists(excel_path):
-                    book = load_workbook(excel_path)
-                    for sheet in book.sheetnames:
-                        df_existing = pd.read_excel(excel_path, sheet_name=sheet)
-                        existing_data.update(df_existing.apply(tuple, axis=1))
+                book = load_workbook(excel_path)
+                for sheet in book.sheetnames:
+                    df_existing = pd.read_excel(excel_path, sheet_name=sheet)
+                    existing_data.update(df_existing.apply(tuple, axis=1))
 
                 # יצירת רשימה חדשה של נתונים ייחודיים
                 div_list = [div.text.split("\n") for div in div_elements]
